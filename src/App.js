@@ -1,6 +1,7 @@
 import Login from "./Components/Login";
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Navbar from "./Components/Navbar";
+import Admin from "./Components/Admin";
 
 
 
@@ -15,7 +16,7 @@ function App() {
                   <Login />
               </Route>
               <Route path="/admin">
-                ... ruta deladmin
+                <Admin />
               </Route>
               <Route path="/" exact>
                   Ruta de inicio

@@ -1,10 +1,12 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom';
 
-const Login = () => {
+const Login = (props) => {
 
-    const [email, setEmail] = React.useState('');
-    const [pass, setPass]   = React.useState('');
-    const [error, setError]   = React.useState(''); 
+    const [email, setEmail]             = React.useState('');
+    const [pass, setPass]               = React.useState('');
+    const [error, setError]             = React.useState(''); 
+    const [esRegistro, setEsRegistro]   = React.useState(true); 
 
     const procesarDatos = e =>{
         e.preventDefault();
@@ -29,18 +31,43 @@ const Login = () => {
             setError("6 o más carácteres");
             return
         }
-        setEmail('')
-        setPass('')
-        setError(null)
-        console.log('correcto!!!');
-        alert("felicidades")
+
+       
+   if(esRegistro){
+       register()
+   }else{
+        Login()
+   }
 
     }//procesarDatos
 
 
+const register = () => {
+    // to do
+    console.log("usuario nuevo agregado!!!")
+    props.history.push('/admin');
+}
+
+const Login = () => {
+        if( email == 'dennis@gmail.com' && pass == 'abc1234')
+        {
+            console.log("usuario logueado!!!")
+            setEmail('')
+            setPass('')
+            setError(null)
+            props.history.push('/admin');
+        }else{
+            setError('Credenciales inválidas')
+        }
+}
+
     return (
         <div className="mt-5">
-                Registro y login
+             
+                {
+                    esRegistro ? 'Registro de usuarios' : 'Login de acceso'
+                }
+
                 <hr/>
                 <div className="col-12 col-sm-8 col-md-6 col-xl-4">
 
@@ -69,8 +96,22 @@ const Login = () => {
                         />
                     <button type="submit" 
                             className="btn btn-lg btn-block btn-dark">
-                                Registrar
+                                 {
+                    esRegistro ? 'Registrarse' : 'Acceder'
+                    }
                     </button>
+                    
+                    <button type="button"
+                            className="btn btn-sm btn-block btn-info"
+                            onClick = { ()=> setEsRegistro( !esRegistro ) }
+                            >
+                                      
+                        {
+                        esRegistro ? '¿Ya estás registrado?' : '¿No tienes cuenta?'
+                        }
+
+                    </button>
+
 
                     </form>
 
@@ -80,4 +121,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default withRouter(Login)
