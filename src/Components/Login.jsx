@@ -1,5 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom';
+import {db, auth} from '../firebase';
 
 const Login = (props) => {
 
@@ -42,11 +43,33 @@ const Login = (props) => {
     }//procesarDatos
 
 
-const register = () => {
-    // to do
-    console.log("usuario nuevo agregado!!!")
-    props.history.push('/admin');
-}
+
+const register = React.useCallback(  async()=> {
+
+    try {
+        
+      const res = await auth.createUserWithEmailAndPassword(email, pass);
+        db.collection('usuarios').doc(res.user.email).set({
+            email   :   res.user.email  ,
+            uid     : res.user.uid
+        });
+
+
+        setEmail('')
+        setPass('')
+        setError(null)
+        props.history.push('/admin');
+    } catch (error) {
+        console.log(error);
+    }
+
+   
+}, [email, pass,props.history])
+
+
+
+    
+
 
 const Login = () => {
         if( email == 'dennis@gmail.com' && pass == 'abc1234')
