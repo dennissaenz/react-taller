@@ -54,7 +54,6 @@ const register = React.useCallback(  async()=> {
             uid     : res.user.uid
         });
 
-
         setEmail('')
         setPass('')
         setError(null)
@@ -70,19 +69,33 @@ const register = React.useCallback(  async()=> {
 
     
 
+const Login = React.useCallback( async() => {
 
-const Login = () => {
-        if( email == 'dennis@gmail.com' && pass == 'abc1234')
-        {
-            console.log("usuario logueado!!!")
-            setEmail('')
-            setPass('')
-            setError(null)
-            props.history.push('/admin');
-        }else{
-            setError('Credenciales inválidas')
+    try {
+        const res = await auth.signInWithEmailAndPassword(email, pass);
+        console.log(res.user);
+        setEmail('')
+        setPass('')
+        setError(null)
+        props.history.push('/admin');
+
+    } catch (error) {
+        if(error.code === 'auth/invalid-email'){
+            setError("email no válido");
         }
-}
+        if(error.code === 'auth/user-not-found'){
+            setError("user no registrado");
+        }
+        if(error.code === 'auth/wrong-password'){
+            setError("contraseña incorrecta");
+        }
+    }
+}, [email, pass, props.history]);
+
+
+
+
+
 
     return (
         <div className="mt-5">
